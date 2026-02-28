@@ -13,7 +13,7 @@
             </div>
         @endif
 
-        <form action="/register/register" method="POST" class="auth-form">
+        <form action="{{ route('register') }}" method="POST" class="auth-form">
             @csrf
 
             <div class="form-group">

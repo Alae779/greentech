@@ -14,17 +14,21 @@
         <nav>
             <div class="logo">🌱 GreenTech Solutions</div>
             <ul class="nav-links">
-                <li><a href="/">Accueil</a></li>
+                @can('access_dashboard')
+                    <li><a href="{{ route('home') }}">Accueil</a></li>
+                @endcan
                 @guest
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Inscription</a></li>
+                <li><a href="{{ route('login_form') }}">Login</a></li>
+                <li><a href="{{ route('register_form') }}">Inscription</a></li>
                 @endguest
                 @auth
-                <form method="POST" action="/logout">
+                <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <li><button type="submit">Log Out</button></li>
                 </form>
-                <li><a href="/favoris">Mes Favoris</a></li>
+                <li><a href="{{ route('show_favoris') }}">Mes Favoris</a></li>
+                <li><a href="{{ route('show_users') }}">Users</a></li>
+                <li><a href="{{ route('show_roles') }}">Roles</a></li>
                 @endauth
             </ul>
         </nav>

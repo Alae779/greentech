@@ -15,10 +15,10 @@ class FavorisController extends Controller
     }
     public function toggle(Request $request, Product $product){
         $user = $request->user();
+        // dd($user);
         // dd($user, $product->id);
 
         $user->favoris()->toggle($product->id);
-        // dd($user);
         return redirect('/');
     }
 }

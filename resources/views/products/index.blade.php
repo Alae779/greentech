@@ -2,20 +2,22 @@
 
 @section('title', 'Catalogue')
 
+
 <h1 style="font-size: 32px; color: #2c3e50; margin-bottom: 30px;">🌿 Notre Catalogue</h1>
 
 <!-- Barre de recherche -->
-<form action="/products/search" method="GET" class="search-bar">
-    <input type="text" name="query" class="search-input" placeholder="Rechercher un produit...">
+<form action="{{ route('search_product') }}" method="GET" class="search-bar">
+    <input type="text" name="query" value="{{request('query')}}" class="search-input" placeholder="Rechercher un produit...">
     <button type="submit" class="btn">Search</button>
     @auth
     @if(auth()->user()->role === 'admin')
-    <a href="/admin/products/create" class="btn">Ajouter un Produit</a>
     @endif
+    <a href="{{ route('create_product') }}" class="btn">Ajouter un Produit</a>
     @endauth
 </form>
 
 <!-- Filtres par catégorie-->
+
 <div class="category-filter">
     <a href="{{url('/')}}" class="category-btn {{ request()->is('/') && !request('category') ? 'active' : '' }}">Tous</a>
     <a href="{{url('/?category=1')}}" class="category-btn {{ request('category') == 1 ? 'active' : '' }}">🌱 Plantes</a>
@@ -33,9 +35,9 @@
             <p class="product-price">{{ $product->prix }} MAD</p>
             <span class="product-category">{{$product->category->title}}</span>
             <br><br>
-            <a href="/products/show/{{ $product->id }}" class="btn">Voir détails</a>
+            <a href="{{ route('show_products', $product->id) }}" class="btn">Voir détails</a>
             @auth
-            <form action="/favoris/toggle/{{ $product->id }}" method="post">
+            <form action="{{route('toggle_favoris',$product->id)}}" method="post">
             @csrf
             <button type="submit" class="favorite-btn">
                @if(auth()->user()->isFavoris($product->id))
@@ -45,10 +47,12 @@
                @endif
             </button>
             </form>
-            @if(auth()->user()->role === 'admin')
-            <a href="/products/edit/{{ $product->id }}" class="btn">Modifier</a>
-            <a href="/products/delete/{{ $product->id }}" class="btn" onclick="return confirm('Are you sure you want to delete this product?');">Supprimer</a>
-            @endif
+            @can('update', $product)
+            <a href="{{route('edit_product',$product->id)}}" class="btn">Modifier</a>
+            @endcan
+            @can('delete', $product)
+            <a href="{{route('delete_product',$product->id)}}" class="btn" onclick="return confirm('Are you sure you want to delete this product?');">Supprimer</a>
+            @endcan
             @endauth
         </div>
     </div>

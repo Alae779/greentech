@@ -4,7 +4,7 @@
     <h1 style="font-size: 32px; color: #2c3e50; margin-bottom: 30px;">Modifier un produit</h1>
 
     <div style="background: white; border-radius: 12px; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
-        <form action="/admin/products/update/{{$product->id}}" method="POST">
+        <form action="{{route('update_product',$product->id)}}" method="POST">
             @csrf
 
             <!-- Nom du produit -->
@@ -37,7 +37,7 @@
 
             <!-- Boutons -->
             <div style="display: flex; gap: 15px; margin-top: 30px;">
-                <a href="/" class="btn-secondary">Annuler</a>
+                <a href="{{ route('home') }}" class="btn-secondary">Annuler</a>
                 <button type="submit" class="btn">💾 Enregistrer</button>
             </div>
         </form>
